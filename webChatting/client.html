@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Winc ChattingRoom</title>
+    <style>
+      .chat_log{ width: 95%; height: 200px; border: 1px solid black; overflow:scroll;}
+      .name{ width: 10%; }
+      .textlable1{ width: 10%; }
+      .nicknm{ width: 10%; }
+      .message{ width: 60%; }
+      .chat{ width: 10%; }
+    </style>
+  </head>
+  <body>
+    <div>
+      <div id="chatLog" class="chat_log"></div>
+    </div>
+    <form id="chat">
+      <input id="name" class="name" type="hidden" readonly>
+      <span class="textlable1">이름 : </span>
+      <input id="nicknm" id="nicknm" class="nicknm" type="text">
+      <input id="message"  id="message" class="message" type="text" disabled>
+      <input type="submit" id="inmsg" class="chat" value="입력" style="display:none"/>
+      <input type="button" id="enter" class="chat" value="입장" onclick="entrance();"/>
+    </form>
+    <audio id="myAudio" src="http://192.168.10.76:3100/sound/" preload="auto"></audio>
+
+    <div id="box" class="box">
+    <div>TO DO : 메세지뒤에 보낸일시</div>
+    <div>: 보낸사람 받는사람 좌우구별(카통마냥)</div>
+    <div>: 메세지 오면 왔다는 표시필요. 작업줄에 깜빡임</div>
+    <div>: 신규 메세지 오면 어디까지 읽었는지 필요</div>
+    <div>: 누군가 글쓸때 누가 메세지 작성중입니다. 표시</div>
+    <div>: 메세지 수신시 '소리' 알림 기능은 추가하였으나 개선 필요</div>
+    <div>: 입장시 입장한사람 이름 제거 및 두번 전송 처리 버그</div>
+    <div>: 채팅장 길이에 맞게 글자 줄바꿈처리</div>
+    <div>: 채팅방 리스트</div>
+    <div>: 채팅방 참가자 리스트</div>
+    <div>: 채팅방 비밀번호</div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      var chattingRoom = "out";
+      var socket = io();
+      $('#chat').on('submit', function(e){
+        //console.log("닉넴은?"+$('#nicknm').val());
+        socket.emit('send message', $('#name').val(), $('#nicknm').val()+" : "+$('#message').val() + "   ["+sendMassageTime()+"]");
+        $('#message').val("");
+        $("#message").focus();
+        e.preventDefault();
+      });
+      socket.on('receive message', function(msg){
+            if(chattingRoom == "in"){
+                var appendhtml = $('#chatLog').html();
+                $('#chatLog').html(appendhtml+"<br/>"+msg);
+                $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
+                togglePlay();
+                $("#message").focus();
+            }
+      });
+      socket.on('change name', function(name){
+        $('#name').val(name);
+      });
+      socket.on('comein name', function(message){
+        $('#chatLog').append(message+"\n");
+      });
+      socket.on('disconnect chattingRoom', function(message){
+        $('#chatLog').append(message+"\n");
+      });
+
+      $("input[id=nicknm]").keydown(function (key) {
+          if(key.keyCode == 13){
+              entrance();
+          }
+      });
+
+    function entrance(){
+        if($.trim($('#nicknm').val())==""){
+            alert("이름을 입력하세요~");
+            e.preventDefault();
+            return false;
+        }else{
+            chattingRoom = "in";
+            $("#enter").attr("disabled", false);
+            $("#inmsg").show();
+            $("#message").attr("disabled", false);
+            $("#enter").hide();
+            $("#nicknm").attr("disabled", true);
+            $("#message").val($('#nicknm').val()+"님이 입장하였습니다.");
+            $( "#chat" ).submit();
+        }
+    }
+    function sendMassageTime() {
+      var now = new Date();
+      var nowTime = now.getHours() + ":" + now.getMinutes();// + ":" + now.getSeconds();
+      nowTime = "<span style=color:red>"+nowTime+"</span>";
+      //console.log("nowTime="+nowTime);
+      return nowTime;
+    }
+
+    var myAudio = document.getElementById("myAudio");
+    function togglePlay() {
+      myAudio.play();
+    };
+
+    </script>
+  </body>
+</html>
