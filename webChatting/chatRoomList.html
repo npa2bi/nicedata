@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Winc Chatting</title>
+
+        <style type="text/css">
+            body {text-align: center;color: #000;}
+            div#wapper {width: 100%;text-align: left;min-height: 300px;margin: 0 auto;}
+            header, footer, nav, aside, section {border: 1px solid #999;margin: 5px;padding: 10px;}
+            header {height: 50px;background: url('/static/image/common/bg_light_blue_patten.gif') repeat;}
+            section {width: 604px;}
+            aside {width: 100px;}
+            footer {height: 50px;position: relatiev;clear: both;}
+            article {width: 90%;margin: 20px;}
+
+            table.type11 {border-collapse: separate;border-spacing: 1px;text-align: center;line-height: 1.5;margin: 20px 10px;}
+            table.type11 th {width: 155px;padding: 10px;font-weight: bold;vertical-align: top;color: #fff;background: #ce4869 ;}
+            table.type11 td {width: 155px;padding: 10px;vertical-align: top;border-bottom: 1px solid #ccc;background: #eee;}
+            .join_input {width: 465px;}
+            .textlable5{ width: 5%; }
+            .roomnum{ width: 8%; }
+            .roompw{ width: 15%; }
+            .nicknm{ width: 20%; }
+        </style>
+    </head>
+    <script src="//code.jquery.com/jquery-1.11.1.js"></script>
+    <script type="text/javascript">
+        function chattingjoin(){
+            var roomnum = $("#roomnum").val();
+            var roompw = $("#roompw").val();
+            var nicknm = $("#nicknm").val();
+
+            if( roomnum.length == 0 || $.trim(roomnum) == "" ){
+                alert("방번호 입력하세요.");
+                return;
+            }else if( roompw.length == 0 || $.trim(roompw) == "" ){
+                alert("비밀번호 입력하세요.");
+                return;
+            }else if( nicknm.length == 0 || $.trim(nicknm) == "" ){
+                alert("대화명 입력하세요.");
+                return;
+            }
+
+            //var urlParam = "?pagenum="+pagenum+"&roompw="+roompw+"&nicknm="+nicknm;
+            //var encodeParam = encodeURIComponent(urlParam);
+            var encodeParam = "?roomnum="+encodeURIComponent(roomnum,"UTF-8")+"&roompw="+encodeURIComponent(roompw,"UTF-8")+"&nicknm="+encodeURIComponent(nicknm,"UTF-8");
+            console.log("encodeParam="+encodeParam);
+            location.href="/chattingRoom/"+encodeParam;
+        }
+    </script>
+    <body>
+        <div id="wapper">
+            <!--헤더시작-->
+            <header>
+                <p><H3>웹 채팅</H3></p>
+            </header>
+
+            <!--콘텐츠부분-->
+            <section>
+                <table class="type11">
+                    <thead>
+                        <tr>
+                            <th scope="cols">방번호</th>
+                            <th scope="cols">방제목</th>
+                            <th scope="cols">관리자</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</th>
+                            <td>웹채팅방1</th>
+                            <td>옥승현</th>
+                        </tr>
+                        <tr>
+                            <td>2</th>
+                            <td>웹채팅방2</th>
+                            <td>옥승현</th>
+                        </tr>
+                        <tr>
+                            <td>3</th>
+                            <td>웹채팅방3</th>
+                            <td>옥승현</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            <form id="chat" method="get">
+                <div class="join_input">
+                    <span class="textlable5">방번호 : <input type="text" id="roomnum" name="roomnum" class="roomnum" ></span>
+                    <span class="textlable5">패스워드 : <input type="text" id="roompw" name="roompw" class="roompw" ></span>
+                    <span class="textlable5">이름 : <input type="text" id="nicknm" name="nicknm" class="nicknm" ></span>
+                    <input type="button" id="join" class="join" value="입장" onclick="chattingjoin();" />
+                </div>
+            </form>
+            <div id="box" class="box">
+                <div>TO DO : 빨리만들어요~</div>
+                <div>: 즐거운 개발</div>
+                <div>: 신나는 개발</div>
+            </div>
+
+            <!--풋터-->
+            <footer>ㅇㅇㅇㅇㅇ</footer>
+        </div>
+    </body>
+</html>

@@ -19,12 +19,12 @@
     <form id="chat">
       <input id="name" class="name" type="hidden" readonly>
       <span class="textlable1">이름 : </span>
-      <input id="nicknm" id="nicknm" class="nicknm" type="text">
-      <input id="message"  id="message" class="message" type="text" disabled>
+      <input id="nicknm" name="nicknm" class="nicknm" type="text">
+      <input id="message"  name="message" class="message" type="text" disabled>
       <input type="submit" id="inmsg" class="chat" value="입력" style="display:none"/>
       <input type="button" id="enter" class="chat" value="입장" onclick="entrance();"/>
     </form>
-    <audio id="myAudio" src="http://192.168.10.76:3100/sound/" preload="auto"></audio>
+    <audio id="myAudio" src="/static/audio/Track_68.mp3" preload="auto"></audio>
 
     <div id="box" class="box">
     <div>TO DO : 빨리만들어요~</div>
@@ -40,7 +40,7 @@
     <div>: 채팅방 참가자 리스트</div>
     <div>: 채팅방 비밀번호</div>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       var chattingRoom = "out";
       var socket = io();
